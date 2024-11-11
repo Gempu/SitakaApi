@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\RankingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +24,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/home', [HomeController::class, 'getHome']);
     Route::get('/book', [BookController::class, 'getBooks']);
     Route::get('/book/{biblio_id}', [BookController::class, 'bookDetail']);
+    Route::get('/ranking', [RankingController::class, 'index']);
+    Route::post('/change-password', [AuthController::class, 'changePassword']);
 });
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

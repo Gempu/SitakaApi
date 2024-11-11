@@ -38,4 +38,40 @@ class AuthController extends Controller
             ]
         ],200);
     }
+
+    public function changePassword(Request $request)
+    {
+        // Validasi input
+        $validated = $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|min:8',
+        ]);
+
+        // Dapatkan pengguna yang sedang login
+        $user = $request->user();
+
+        // Cek apakah password lama sesuai
+        if (!Hash::check($validated['current_password'], $user->mpasswd)) {
+            return response()->json([
+                "code" => "400",
+                "status" => "Error",
+                "data" => [
+                    "message" => "Current password is incorrect"
+                ]
+            ], 400);
+        }
+
+        // Update password
+        $user->mpasswd = Hash::make($validated['new_password']);
+        $user->save();
+
+        // Berikan respon jika berhasil
+        return response()->json([
+            "code" => "200",
+            "status" => "OK",
+            "data" => [
+                "message" => "Password changed successfully"
+            ]
+        ], 200);
+    }
 }

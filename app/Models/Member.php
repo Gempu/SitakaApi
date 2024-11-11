@@ -14,7 +14,14 @@ class Member extends Authenticatable
 
     protected $table = 'member';
     protected $primaryKey = 'member_id';
-    protected $fillable = ['member_name', 'email', 'mpasswd', 'member_phone', 'last_login'];
+
+    public $incrementing = false;
+    protected $keyType = 'string';
+
+    const UPDATED_AT = 'last_update';
+    const CREATED_AT = null;
+
+    protected $fillable = ['member_name', 'email', 'mpasswd', 'member_phone', 'last_login', 'score'];
     protected $hidden = ['mpasswd'];
 
     public function loans()
