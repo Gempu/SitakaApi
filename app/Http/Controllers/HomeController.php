@@ -22,6 +22,7 @@ class HomeController extends Controller
                     'title' => $loan->item->biblio->title,
                     'author' => $loan->item->biblio->sor,
                     'publish_year' => $loan->item->biblio->publish_year,
+                    'cover' => $loan->item->biblio->cover,
                     'borrowed_date' => $loan->loan_date,
                     'due_date' => $loan->due_date,
                     'status' => $status,

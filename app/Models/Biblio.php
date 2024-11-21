@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Loan;
+use App\Models\Rating;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -23,4 +24,10 @@ class Biblio extends Model
     {
         return $this->hasManyThrough(Loan::class, Item::class, 'biblio_id', 'item_code', 'biblio_id', 'item_code');
     }
+
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class, 'biblio_id', 'biblio_id');
+    }
+
 }

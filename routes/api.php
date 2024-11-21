@@ -25,6 +25,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/book', [BookController::class, 'getBooks']);
     Route::get('/book/{biblio_id}', [BookController::class, 'bookDetail']);
     Route::get('/ranking', [RankingController::class, 'index']);
+    Route::get('/profile', [AuthController::class, 'showProfile']);
+    Route::get('/notifications', [AuthController::class, 'getNotifications']);
     Route::post('/change-password', [AuthController::class, 'changePassword']);
 });
 

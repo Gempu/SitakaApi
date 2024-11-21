@@ -9,7 +9,8 @@ class BookController extends Controller
 {
     public function getBooks()
     {
-        $books = Biblio::orderByDesc('input_date')
+        $books = Biblio::with('ratings') // Pastikan relasi 'ratings' dimuat
+            ->orderByDesc('input_date')
             ->take(10)
             ->get()
             ->map(function ($biblio) {
@@ -18,9 +19,11 @@ class BookController extends Controller
                     'authors' => $biblio->sor,
                     'publish_year' => $biblio->publish_year,
                     'code' => $biblio->call_number,
-                    'rating' => optional($biblio->rating)->rating_value ?? 'No rating',
+                    'cover' => $biblio->cover,
+                    'rating' => $biblio->ratings->avg('rating_value') ?? 'No rating', // Rata-rata rating
                 ];
             });
+
 
         return response()->json([
             "code" => "200",
@@ -62,6 +65,8 @@ class BookController extends Controller
             'publish_year' => $biblio->publish_year,
             'pages' => $biblio->collation,
             'synopsis' => $biblio->notes,
+            'cover' => $biblio->cover,
+            'rating' => $biblio->ratings->avg('rating_value') ?? 'No rating',
             'available_copies' => $biblio->items->where('item_status_id', '==', '0')->count(),
             'availability' => $biblio->items
                 ->map(function ($item) {
