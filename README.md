@@ -1,66 +1,205 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Dokumentasi Sitaka API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Cara Menjalankan Proyek
 
-## About Laravel
+1. **Clone Repository**  
+   Clone repository dari GitHub ke lokal dengan perintah berikut:
+   ```bash
+   git clone https://github.com/Gempu/SitakaApi.git
+   ```
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+2. **Masuk ke Direktori Proyek**  
+   Setelah proses clone selesai, masuk ke direktori proyek:
+   ```bash
+   cd repository-name
+   ```
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+3. **Install Dependencies**  
+   Jalankan perintah berikut untuk menginstal dependencies Laravel:
+   ```bash
+   composer install
+   ```
+   Jika Composer belum terinstal, silakan unduh dan instal terlebih dahulu: [Composer Download](https://getcomposer.org/download/).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+4. **Buat File `.env`**  
+   Salin file `.env` dari template `.env.example`:
+   ```bash
+   cp .env.example .env
+   ```
 
-## Learning Laravel
+5. **Generate APP_KEY**  
+   Laravel memerlukan kunci aplikasi untuk enkripsi data. Buat kunci aplikasi dengan perintah berikut:
+   ```bash
+   php artisan key:generate
+   ```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+6. **Konfigurasi Database**  
+   Edit file `.env` untuk menyesuaikan konfigurasi database Anda. Contoh:
+   ```
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=db_sitaka
+   DB_USERNAME=root
+   DB_PASSWORD=
+   ```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+7. **Membuat Database**  
+   Jika belum memiliki database, buat database dengan langkah berikut:
+   - Buka **phpMyAdmin**.
+   - Buat database dengan nama `db_sitaka`.
+   - Import file database yang dapat anda mintakan pada admin:  
+     [Database File](https://drive.google.com).
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+8. **Mengedit Database**  
+   Setelah import selesai, jalankan migrasi berikut untuk membuat tabel - tabel yang dibutuhkan :
+   ```bash
+   php artisan migrate --path=./database/migrations/2019_12_14_000001_create_personal_access_tokens_table.php
+   ```
+   ```bash
+   php artisan migrate --path=./database/migrations/2024_11_21_052920_create_ratings_table.php
+   ```
+   ```bash
+   php artisan migrate --path=./database/migrations/2024_11_21_054941_create_notifications_table.php
+   ```
 
-## Laravel Sponsors
+   **Membuat Password Terenkripsi**  
+   Jalankan perintah berikut di Tinker untuk menghasilkan password terenkripsi:
+   ```bash
+   php artisan tinker
+   use Illuminate\Support\Facades\Hash;
+   echo Hash::make('password');
+   ```
+   Salin hasil enkripsi password dan masukkan ke kolom `mpasswd` di tabel `member`.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+   **Menambahkan Kolom Skor**  
+   Tambahkan kolom `score` ke tabel `member` dengan default `0`:
+   - Buka tabel `member`.
+   - Pilih menu **Struktur**.
+   - Tambahkan kolom baru bernama `score` dengan tipe integer dan default `0`.
+   - Simpan perubahan.
 
-### Premium Partners
+   **Menambahkan Kolom Cover**  
+   Tambahkan kolom `cover` ke tabel `biblio` dengan default `null`:
+   - Buka tabel `biblio`.
+   - Pilih menu **Struktur**.
+   - Tambahkan kolom baru bernama `cover` dengan tipe varchar dan default `null`.
+   - Simpan perubahan.     
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+9. **Jalankan Aplikasi Laravel**  
+   Untuk menjalankan aplikasi Laravel, gunakan perintah berikut:
+   ```bash
+   php artisan serve
+   ```
+   Aplikasi dapat diakses di `http://127.0.0.1:8000`.
 
-## Contributing
+   Untuk aplikasi mobile, gunakan host komputer Anda:
+   ```bash
+   php artisan serve --host=<host-komputer> --port=8000
+   ```
+   Aplikasi dapat diakses di `http://<host-komputer>:8000`.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## API Response
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 1. **Login**  
+**Endpoint:**  
+```http
+POST http://127.0.0.1:8000/api/login
+```
 
-## Security Vulnerabilities
+**Request:**
+```json
+{
+    "email": "alwandanny01@gmail.com",
+    "password": "password"
+}
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+**Response:**
+```json
+{
+    "code": "200",
+    "status": "OK",
+    "data": {
+        "member": "Alwan Danny Latif",
+        "token": "9|gPYVAj5yQRmg6Q0KMS802147i7OKmD7UrLi57yKQa8162847"
+    }
+}
+```
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 2. **Home**  
+**Endpoint:**  
+```http
+GET http://127.0.0.1:8000/api/home
+```
+
+**Header:**
+```json
+{
+    "Authorization": "Bearer <token>"
+}
+```
+
+**Response:**  
+(Custom sesuai data aplikasi Anda)
+
+---
+
+### 3. **Daftar Buku**  
+**Endpoint:**  
+```http
+GET http://127.0.0.1:8000/api/book
+```
+
+**Response:**  
+(Custom sesuai data aplikasi Anda)
+
+---
+
+### 4. **Detail Buku**  
+**Endpoint:**  
+```http
+GET http://127.0.0.1:8000/api/book/<idbuku>
+```
+
+---
+
+### 5. **Peringkat**  
+**Endpoint:**  
+```http
+GET http://127.0.0.1:8000/api/ranking
+```
+
+---
+
+### 6. **Ganti Password**  
+**Endpoint:**  
+```http
+POST http://127.0.0.1:8000/api/change-password
+```
+
+**Request:**
+```json
+{
+    "current_password": "password_lama",
+    "new_password": "password_baru",
+    "new_password_confirmation": "password_baru"
+}
+```
+
+**Response:**
+```json
+{
+    "code": "200",
+    "status": "OK",
+    "data": {
+        "message": "Password changed successfully"
+    }
+}
+```
+
+---
